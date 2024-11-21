@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Speech Recognition App</h1>
-    <button @click="startRecognition" :disabled="isListening || !isSupported">
+    <button @click="startRecognition" :disabled="isListening">
       Start Listening
     </button>
     <button @click="stopRecognition" :disabled="!isListening">Stop Listening</button>
