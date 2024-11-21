@@ -1,9 +1,13 @@
 <template>
   <div>
     <h1>Speech Recognition App</h1>
+<<<<<<< HEAD
     <button @click="startRecognition" :disabled="isListening">
       Start Listening
     </button>
+=======
+    <button @click="startRecognition" :disabled="isListening">Start Listening</button>
+>>>>>>> 324d8ca6fb435e7333be8bd92b62f822aa9f4bcd
     <button @click="stopRecognition" :disabled="!isListening">Stop Listening</button>
     <p v-if="error" class="error">Error: {{ error }}</p>
     <p v-if="transcript">{{ transcript }}</p>
