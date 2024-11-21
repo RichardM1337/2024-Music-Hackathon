@@ -1,94 +1,75 @@
-<script setup lang="ts">
-import { useSpeechRecognition } from '@vueuse/core'
-import { ref, watch } from 'vue'
-
-const lang = ref('en-US')
-const recognizedText = ref('')
-const speech = useSpeechRecognition({
-  lang,
-  continuous: true,
-})
-
-const { isListening, isSupported, stop, result } = speech
-
-if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
-  recognition.lang = 'en-US' // Set the language
-
-  recognition.onresult = (event) => {
-    recognizedText.value = event.results[0][0].transcript
-  }
-} else {
-  console.error('Speech recognition is not supported in this browser.')
-}
-function startRecognition() {
-  this.recognition.start()
-}
-</script>
-
 <template>
   <div>
-    <div v-if="!isSupported">
-      Your browser does not support SpeechRecognition API,
-      <a href="https://caniuse.com/mdn-api_speechrecognition" target="_blank">more details</a>
-    </div>
-    <div v-else>
-      <div space-x-4>
-        <label class="radio">
-          <input v-model="lang" value="en-US" type="radio" />
-          <span>English (US)</span>
-        </label>
-      </div>
-    </div>
-    <div>
-      <button @click="startRecognition">Start Listening</button>
-      <p>{{ recognizedText }}</p>
-    </div>
+    <h1>Speech Recognition App</h1>
+    <button @click="startRecognition" :disabled="isListening || !isSupported">
+      Start Listening
+    </button>
+    <button @click="stopRecognition" :disabled="!isListening">Stop Listening</button>
+    <p v-if="error" class="error">Error: {{ error }}</p>
+    <p v-if="transcript">{{ transcript }}</p>
   </div>
 </template>
 
-<!-- <style scoped>
-.tag {
-  padding: 0.3rem 0.6rem;
-  margin-right: 0.5rem;
-  border-radius: 4px;
+<script>
+export default {
+  data() {
+    return {
+      isSupported: false,
+      isListening: false,
+      transcript: '',
+      error: '',
+      recognition: null, // WebSpeechAPI initialization
+    }
+  },
+  methods: {
+    initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition // isn't it funny how the speech recognition API built by mozilla isn't availble on firefox?
+      if (!SpeechRecognition) {
+        this.error = 'Speech Recognition API is not supported in this browser.'
+        this.isSupported = false
+        return
+      }
+      this.recognition = new SpeechRecognition()
+      this.recognition.lang = 'en-US'
+      this.recognition.continuous = true // keep going
+      this.recognition.interimResults = false
+      this.recognition.onresult = (event) => {
+        const result = event.results[event.results.length - 1][0].transcript // most likely interpretation of most recent word or phrase from a transcript
+        this.transcript = result
+      }
+      this.recognition.onerror = (event) => {
+        // error handling
+        this.error = event.error
+        this.isListening = false
+      }
+      this.recognition.onend = () => {
+        this.isListening = false // stop listening when speech ends
+      }
+    },
+    startRecognition() {
+      if (!this.recognition) {
+        this.initSpeechRecognition() // initiallaize speech recognition or something
+      }
+      this.error = ''
+      this.transcript = ''
+      this.isListening = true
+      this.recognition.start() // reset all variables
+    },
+    stopRecognition() {
+      if (this.recognition) {
+        this.recognition.stop()
+      }
+    },
+  },
+  mounted() {
+    this.initSpeechRecognition()
+  },
 }
-</style> -->
+</script>
 
-<style scoped lang="postcss">
-input {
-  --tw-ring-offset-width: 1px !important;
-  --tw-ring-color: #8885 !important;
-  --tw-ring-offset-color: transparent !important;
-}
-
-.radio {
-  @apply inline-flex items-center my-auto cursor-pointer select-none;
-}
-
-.radio input {
-  appearance: none;
-  padding: 0;
-  -webkit-print-color-adjust: exact;
-  color-adjust: exact;
-  display: inline-block;
-  vertical-align: middle;
-  background-origin: border-box;
-  user-select: none;
-  flex-shrink: 0;
-  height: 1rem;
-  width: 1rem;
-  @apply bg-gray-400/30;
-  @apply rounded-full h-4 w-4 select-none relative;
-  @apply mr-1;
-}
-
-.radio input:checked::after {
-  content: '';
-  @apply absolute inset-[3px] rounded-full bg-primary;
-}
-
-.checkbox span {
-  @apply ml-1.5 text-13px opacity-70;
+<style>
+.error {
+  color: red;
+  font-weight: bold;
 }
 </style>
