@@ -9,6 +9,8 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/mic">Mic</RouterLink>
+        <RouterLink to="/pitch">Pitch</RouterLink>
       </nav>
     </div>
   </header>
