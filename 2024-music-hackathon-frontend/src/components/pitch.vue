@@ -11,9 +11,9 @@
 
         <button @click="record" ref="start">create context (or record whatever)</button>
         <button disabled>stop</button>
-        <h1 class="text-3xl font-bold underline">
+        <!-- <h1 class="text-3xl font-bold underline">
       Hello world!
-    </h1>
+    </h1> -->
     </div>
 </template>
 

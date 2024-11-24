@@ -6,6 +6,6 @@ import pitch from '@/components/pitch.vue';
 <template>
   <main>
     <SpeechRecog />
-    <pitch />
+    <!-- <pitch /> -->
   </main>
 </template>
