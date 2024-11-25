@@ -3,6 +3,7 @@
     <button @click="startRecording" :disabled="isRecording">start recording</button>
     <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
     <audio v-if="audioURL" :src="audioURL" controls></audio>
+    <button @click="playAudio(3)" :disabled="!audioBlob">click me</button>
   </div>
 </template>
 
@@ -14,7 +15,19 @@ export default {
       mediaRecorder: null,
       isRecording: false,
       audioChunks: [],
+      audioBlob: null,
       audioURL: null,
+      keyToPitch: {
+        a: -12,
+        s: -7,
+        d: -5,
+        f: -3,
+        g: 0,
+        h: 3,
+        j: 5,
+        k: 7,
+        l: 12,
+      },
     }
   },
   methods: {
@@ -54,12 +67,45 @@ export default {
       if (this.mediaRecorder) {
         this.mediaRecorder.stop()
         this.mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' })
-          this.audioURL = URL.createObjectURL(audioBlob)
+          this.audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' })
+          this.audioURL = URL.createObjectURL(this.audioBlob)
           this.recording = false
         }
       }
     },
+    async playAudio(playbackrate) {
+      const audioContext = new AudioContext()
+      const audioBuffer = await this.blobToAudioContext(this.audioBlob, audioContext)
+      const src = audioContext.createBufferSource()
+      src.buffer = audioBuffer
+      src.playbackRate.value = playbackrate
+      src.connect(audioContext.destination)
+      src.start()
+    },
+    async blobToAudioContext(blob, context) {
+      return new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.onloadend = async () => {
+          const arrayBuffer = reader.result
+          const audioBuffer = await context.decodeAudioData(arrayBuffer)
+          resolve(audioBuffer)
+        }
+        reader.readAsArrayBuffer(blob)
+      })
+    },
+  },
+  keyDownHandler(event) {
+    const semitone = this.keyToPitch[event.key]
+    if (semitone !== undefined) {
+      const playbackRate = Math.pow(2, semitone) / 12
+      this.playAudio(playbackRate)
+    }
+  },
+  mounted() {
+    window.addEventListener('keydown', this.keyDownHandler)
+  },
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.keyDownHandler)
   },
 }
 </script>
