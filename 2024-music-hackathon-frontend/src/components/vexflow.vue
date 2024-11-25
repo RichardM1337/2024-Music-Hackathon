@@ -62,11 +62,10 @@ onMounted(() => {
   renderer = new Renderer(div, Renderer.Backends.SVG);
   renderer.resize(500, 500);
   context = renderer.getContext();
-  drawStave();
 });
 
 function drawStave(){
-  const { Stave, StaveNote, Voice, Formatter } = Vex.Flow;
+  const { Stave, Voice, Formatter } = Vex.Flow;
   context.clear();
   const stave = new Stave(10, 40, 400);
   stave.addClef(clef.value).addTimeSignature(timeSignature.value);

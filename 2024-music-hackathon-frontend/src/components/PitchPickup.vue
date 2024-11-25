@@ -30,12 +30,12 @@ export default {
       return `${pitchClasses[pitchIndex]} ${octave}` // one of the 12 pitches will be selected
     },
     async startRecording() {
+      this.isRecording = true
+        this.msg = 'mic on'
       try {
         this.micInput = await navigator.mediaDevices.getUserMedia({ video: false, audio: true }) //navigator.getUserMedia|| navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         this.micContext = new window.AudioContext() || new window.webkitAudioContext() // creates new audio node object
         const source = this.micContext.createMediaStreamSource(this.micInput)
-        this.isRecording = true
-        this.msg = 'mic on'
         this.analyser = this.micContext.createAnalyser()
         this.analyser.fftSize = 4096 // watch this
         source.connect(this.analyser)
