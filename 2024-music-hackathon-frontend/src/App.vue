@@ -1,22 +1,28 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
+// import { RouterLink, RouterView } from 'vue-router'
+import PitchPickup from '@/components/PitchPickup.vue'
+import vexflow from '@/components/vexflow.vue';
+import MicPickup from '@/components/MicPickup.vue'
+import SpeechRecog from '@/components/SpeechRecog.vue'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
     <div class="wrapper">
-      <nav>
+      <PitchPickup />
+      <vexflow/>
+      <MicPickup />
+      <SpeechRecog />
+      <!-- <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/mic">Mic</RouterLink>
         <RouterLink to="/pitch">Pitch</RouterLink>
-      </nav>
+      </nav> -->
     </div>
   </header>
 
-  <RouterView />
 </template>
 
 <style scoped>
