@@ -1,6 +1,6 @@
 <script setup>
 import SpeechRecog from '../components/SpeechRecog.vue'
-import pitch from '@/components/pitch.vue';
+//import pitch from '@/components/pitch.vue';
 </script>
 
 <template>
