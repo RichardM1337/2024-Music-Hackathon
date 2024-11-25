@@ -1,9 +1,30 @@
 <template>
-   <div id="output"></div>
+<div>
+    <div>
+      <label>
+        Clef:
+        <select v-model="clef">
+          <option value="treble">Treble</option>
+          <option value="bass">Bass</option>
+          <option value="alto">Alto</option>
+        </select>
+      </label>
+      <label>
+        Time Signature:
+        <input v-model="timeSignature" placeholder="e.g., 4/4" />
+      </label>
+      <label>
+        Tempo (BPM):
+        <input type="number" v-model.number="tempo" />
+      </label>
+      <button @click="renderSheet">Render Sheet</button>
+    </div>
+    <div id="output"></div>
+  </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+/* import { onMounted } from 'vue';
 
 onMounted(() => {
     const { Renderer, Stave, StaveNote, Voice, Formatter } = Vex.Flow;
@@ -24,8 +45,41 @@ onMounted(() => {
 
     // Connect it to the rendering context and draw!
     stave.setContext(context).draw();
-})
+}) */
+import { onMounted, ref } from "vue";
+import Vex from "vexflow";
 
+const clef = ref("treble");
+const timeSignature = ref("");
+const tempo = ref(120);
+
+let renderer;
+let context;
+
+onMounted(() => {
+  const { Renderer } = Vex.Flow;
+  const div = document.getElementById("output");
+  renderer = new Renderer(div, Renderer.Backends.SVG);
+  renderer.resize(500, 500);
+  context = renderer.getContext();
+  drawStave();
+});
+
+function drawStave(){
+  const { Stave, StaveNote, Voice, Formatter } = Vex.Flow;
+  context.clear();
+  const stave = new Stave(10, 40, 400);
+  stave.addClef(clef.value).addTimeSignature(timeSignature.value);
+  stave.setContext(context).draw();
+  const voice = new Voice({ num_beats: 4, beat_value: 4 });
+  voice.addTickables(notes);
+  new Formatter().joinVoices([voice]).format([voice], 400);
+  voice.draw(context, stave);
+};
+
+function renderSheet(){
+  drawStave();
+};
 </script>
 
 <style scoped>
