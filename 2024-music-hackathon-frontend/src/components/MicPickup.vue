@@ -16,7 +16,7 @@ export default {
       audioChunks: [], // data chunks
       audioBlob: null, // compressed audio
       audioURL: null, // playback
-      /*       keyToPitch: {
+      keyToPitch: {
         q: -12,
         w: -11,
         e: -10,
@@ -42,27 +42,10 @@ export default {
         v: 10,
         b: 11,
         n: 12,
-      }, */
+      },
     }
   },
   methods: {
-    /* initMicPickup() {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        console.log('getUserMedia supported.')
-        navigator.mediaDevices
-          .getUserMedia({
-            audio: true,
-          })
-          .then((stream) => {
-            this.globalStream = stream
-          })
-          .catch((err) => {
-            console.error(`The following getUserMedia error occurred: ${err}`)
-          })
-      } else {
-        console.log('getUserMedia not supported on your browser!')
-      }
-    }, */
     async startRecording() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -100,9 +83,7 @@ export default {
       src.connect(audioContext.destination)
       src.start()
     },
-  },
-}
-/*     blobToAudioContext(blob, context) {
+    blobToAudioContext(blob, context) {
       // converts blob into buffer
       return new Promise((resolve) => {
         const reader = new FileReader() // binary data reader
@@ -129,5 +110,5 @@ export default {
   beforeUnmount() {
     window.removeEventListener('keydown', this.keyDownHandler)
   },
-} */
+}
 </script>
