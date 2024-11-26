@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <div>
       <label>
         Clef:
@@ -46,41 +46,52 @@ onMounted(() => {
     // Connect it to the rendering context and draw!
     stave.setContext(context).draw();
 }) */
-import { onMounted, ref } from "vue";
-import Vex from "vexflow";
+import { onMounted, ref } from 'vue'
+import Vex from 'vexflow'
+const { Renderer, Stave, StaveNote, Voice, Formatter } = Vex.Flow
+const clef = ref('treble')
+const timeSignature = ref('')
+const tempo = ref(120)
+const notes = [
+  // A quarter-note C.
+  new StaveNote({ keys: ['c/4'], duration: 'q' }),
 
-const clef = ref("treble");
-const timeSignature = ref("");
-const tempo = ref(120);
+  // A quarter-note D.
+  new StaveNote({ keys: ['d/4'], duration: 'q' }),
 
-let renderer;
-let context;
+  // A quarter-note rest. Note that the key (b/4) specifies the vertical
+  // position of the rest.
+  new StaveNote({ keys: ['b/4'], duration: 'qr' }),
+
+  // A C-Major chord.
+  new StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: 'q' }),
+]
+let renderer
+let context
 
 onMounted(() => {
-  const { Renderer } = Vex.Flow;
-  const div = document.getElementById("output");
-  renderer = new Renderer(div, Renderer.Backends.SVG);
-  renderer.resize(500, 500);
-  context = renderer.getContext();
-});
+  const { Renderer } = Vex.Flow
+  const div = document.getElementById('output')
+  renderer = new Renderer(div, Renderer.Backends.SVG)
+  renderer.resize(500, 500)
+  context = renderer.getContext()
+})
 
-function drawStave(){
-  const { Stave, Voice, Formatter } = Vex.Flow;
-  context.clear();
-  const stave = new Stave(10, 40, 400);
-  stave.addClef(clef.value).addTimeSignature(timeSignature.value);
-  stave.setContext(context).draw();
-  const voice = new Voice({ num_beats: 4, beat_value: 4 });
-  voice.addTickables(notes);
-  new Formatter().joinVoices([voice]).format([voice], 400);
-  voice.draw(context, stave);
-};
+function drawStave() {
+  const { Stave, Voice, Formatter } = Vex.Flow
+  context.clear()
+  const stave = new Stave(10, 40, 400)
+  stave.addClef(clef.value).addTimeSignature(timeSignature.value)
+  stave.setContext(context).draw()
+  const voice = new Voice({ num_beats: 4, beat_value: 4 })
+  voice.addTickables(notes)
+  new Formatter().joinVoices([voice]).format([voice], 400)
+  voice.draw(context, stave)
+}
 
-function renderSheet(){
-  drawStave();
-};
+function renderSheet() {
+  drawStave()
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
