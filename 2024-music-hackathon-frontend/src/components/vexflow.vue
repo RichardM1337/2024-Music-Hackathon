@@ -48,7 +48,7 @@ onMounted(() => {
 }) */
 import { onMounted, ref } from 'vue'
 import Vex from 'vexflow'
-const { Renderer, Stave, StaveNote, Voice, Formatter } = Vex.Flow
+const { Renderer, Stave, StaveNote, Voice, Formatter } = Vex.Flow // my IDE when i literally just declared a variable and its telling me im not using it like ok bro. Maybe im going to use it later? Damn.
 const clef = ref('treble')
 const timeSignature = ref('')
 const tempo = ref(120)

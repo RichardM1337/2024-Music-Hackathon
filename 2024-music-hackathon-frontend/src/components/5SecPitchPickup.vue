@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button @click="startRecording" :disabled="isRecording">start recording</button>
-    <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
+    <button @click="startRecording" :disabled="isRecording">
+      start recording (5 second pitch pickup)
+    </button>
     <p v-if="msg">{{ msg }}</p>
     <p v-if="pitchMsg">{{ pitchMsg }}</p>
   </div>
@@ -18,6 +19,7 @@ export default {
       msg: '',
       pitchMsg: '',
       meydaAnalyser: null,
+      pitches: [],
     }
   },
   methods: {
@@ -40,21 +42,23 @@ export default {
         this.analyser.fftSize = 4096 // watch this
         source.connect(this.analyser)
         this.pitchDetection(this.micContext)
+        setTimeout(this.stopRecordingHandler, 5000)
       } catch (error) {
         console.error('Error accessing microphone:', error)
         this.msg = 'Error accessing microphone.'
       }
     },
-    async stopRecording() {
-      if (this.micInput) {
-        const tracks = this.micInput.getTracks() // return the audio
-        tracks.forEach((track) => track.stop())
-        if (this.micContext) this.micContext.close()
-        if (this.meydaAnalyzer) this.meydaAnalyzer.stop()
-        this.isRecording = false
-        this.msg = 'mic off'
-        this.pitchMsg = ''
-      }
+    stopRecordingHandler() {
+      console.log('5 seconds')
+      const tracks = this.micInput.getTracks() // return the audio
+      tracks.forEach((track) => track.stop())
+      if (this.micContext) this.micContext.close()
+      if (this.meydaAnalyzer) this.meydaAnalyzer.stop()
+      this.isRecording = false
+      this.msg = 'mic off'
+      const avgPitch = this.pitches.reduce((a, b) => a + b) / this.pitches.length
+      const frequency = this.frequencyToPitch(Number(avgPitch))
+      this.pitchMsg = `The average pitch is ${frequency}, or ${avgPitch} hz `
     },
     pitchDetection() {
       const detectPitch = Pitchfinder.AMDF() // consider YIN for more accuracy
@@ -63,11 +67,9 @@ export default {
         if (!this.isRecording) return
         this.analyser.getFloatTimeDomainData(buffer) // copies time-domain from float32array into other array
         const pitchFreq = detectPitch(buffer)
-        console.log(pitchFreq)
-        const frequency = this.frequencyToPitch(pitchFreq)
         if (pitchFreq) {
-          this.pitchMsg = `Hz detected: ${pitchFreq.toFixed(2)} Hz
-          Pitch Detected: ${frequency}`
+          this.pitchMsg = 'working...'
+          this.pitches.push(pitchFreq)
         } else {
           this.pitchMsg = 'No pitch detected'
         }

@@ -1,11 +1,13 @@
 <script setup>
 import PitchPickup from '../components/PitchPickup.vue'
-import vexflow from '@/components/vexflow.vue';
+import VexFlow from '@/components/vexflow.vue'
+import AltPitchPickup from '../components/5SecPitchPickup.vue'
 </script>
 
 <template>
   <main>
     <PitchPickup />
-    <vexflow/>
+    <AltPitchPickup />
+    <VexFlow />
   </main>
 </template>
