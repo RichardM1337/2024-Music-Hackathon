@@ -5,7 +5,6 @@
     <button @click="stopRecognition" :disabled="!isListening">Stop Listening</button>
     <p v-if="error" class="error">Error: {{ error }}</p>
     <p v-if="transcript">{{ transcript }}</p>
-    
   </div>
 </template>
 

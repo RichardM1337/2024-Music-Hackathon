@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="startRecording, startRecognition" :disabled="isRecording">start recording</button>
-    <button @click="stopRecording, stopRecognition" :disabled="!isRecording">stop recording</button>
+    <button @click="startRecording" :disabled="isRecording">start recording</button>
+    <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
     <p v-if="msg">{{ msg }}</p>
     <p v-if="pitchMsg">{{ pitchMsg }}</p>
   </div>
@@ -18,57 +18,9 @@ export default {
       msg: '',
       pitchMsg: '',
       meydaAnalyser: null,
-
-      //speech recog
-      isSupported: false,
-      // isListening: false, get rid of all isListening and just combine it with isRecording
-      transcript: '',
-      error: '',
-      recognition: null,
     }
   },
   methods: {
-    initSpeechRecognition() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition // isn't it funny how the speech recognition API built by mozilla isn't availble on firefox?
-      if (!SpeechRecognition) {
-        this.error = 'Speech Recognition API is not supported in this browser.'
-        this.isSupported = false
-        return
-      }
-      this.recognition = new SpeechRecognition()
-      this.recognition.lang = 'en-US'
-      this.recognition.continuous = true // keep going
-      this.recognition.interimResults = false
-      this.recognition.onresult = (event) => {
-        const result = event.results[event.results.length - 1][0].transcript // most likely interpretation of most recent word or phrase from a transcript
-        this.transcript = result
-      }
-      this.recognition.onerror = (event) => {
-        // error handling
-        this.error = event.error
-        this.isRecording = false
-      }
-      this.recognition.onend = () => {
-        this.isRecording = false // stop listening when speech ends
-      }
-    },
-
-    startRecognition() {
-      if (!this.recognition) {
-        this.initSpeechRecognition() // initiallaize speech recognition or something
-      }
-      this.error = ''
-      this.transcript = ''
-      this.isRecording = true
-      this.recognition.start() // reset all variables
-    },
-
-    stopRecognition() {
-      if (this.recognition) {
-        this.recognition.stop()
-      }
-    },
-
     frequencyToPitch(frequency) {
       const A4 = 440 // a4 pitch
       const semitones = Math.round(12 * Math.log2(frequency / A4)) // diff b/w freq and 440 hz
@@ -77,7 +29,6 @@ export default {
       const octave = Math.floor(semitones / 12) + 4
       return `${pitchClasses[pitchIndex]} ${octave}` // one of the 12 pitches will be selected
     },
-
     async startRecording() {
       this.isRecording = true
         this.msg = 'mic on'
@@ -94,7 +45,6 @@ export default {
         this.msg = 'Error accessing microphone.'
       }
     },
-
     async stopRecording() {
       if (this.micInput) {
         const tracks = this.micInput.getTracks() // return the audio
@@ -106,7 +56,6 @@ export default {
         this.pitchMsg = ''
       }
     },
-    
     pitchDetection() {
       const detectPitch = Pitchfinder.AMDF() // consider YIN for more accuracy
       const buffer = new Float32Array(this.analyser.fftSize) // creates a float32array based on FFT size
@@ -127,10 +76,6 @@ export default {
 
       processAudio()
     },
-  },
-
-  mounted() {
-    this.initSpeechRecognition()
   },
 }
 </script>
