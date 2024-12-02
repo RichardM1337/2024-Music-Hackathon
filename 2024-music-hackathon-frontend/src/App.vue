@@ -14,7 +14,7 @@ import SpeechRecog from '@/components/SpeechRecog.vue'
       <PitchPickup />
       <vexflow/>
       <MicPickup />
-      <SpeechRecog />
+      <!-- <SpeechRecog /> -->
       <!-- <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/mic">Mic</RouterLink>
