@@ -5,7 +5,7 @@ import vexflow from '@/components/vexflow.vue';
 import MicPickup from '@/components/MicPickup.vue'
 import SpeechRecog from '@/components/SpeechRecog.vue'
 import upload from '@/components/upload.vue'
-import metronome from '@/components/metronome.vue'
+import metronome from '@/components/Metronome.vue'
 </script>
 
 <template>
