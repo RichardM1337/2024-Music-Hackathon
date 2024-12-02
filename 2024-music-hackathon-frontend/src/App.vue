@@ -11,17 +11,20 @@ import upload from '@/components/upload.vue'
   <header>
     <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
-    <div class="wrapper">
+    <div>
       <PitchPickup />
       <vexflow/>
       <MicPickup />
-      <upload />
       <!-- <SpeechRecog /> -->
       <!-- <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/mic">Mic</RouterLink>
         <RouterLink to="/pitch">Pitch</RouterLink>
       </nav> -->
+    </div>
+    
+    <div>
+      <upload />
     </div>
   </header>
 
