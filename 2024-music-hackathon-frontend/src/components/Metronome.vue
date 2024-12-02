@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class=" w-[23rem] text-xl bg-cyan-700 w-[20rem] h-1/2 flex flex-col items-center text-center">
     <p>{{ tempo }}</p>
-    <button @click="playMetronome">{{ isPlaying ? 'Pause' : 'Play' }}</button>
-    <div>
-      <button @click="incBPM">increase bpm</button>
-      <button @click="decBPM">decrease bpm</button>
-      <p>{{ bpm }}</p>
+    <button class="mb-4 w-full bg-cyan-500 p-4" @click="playMetronome">{{ isPlaying ? 'Pause' : 'Play' }}</button>
+    <div class="border-8 border-stone-300/50 rounded-xl p-2 bg-slate-200/50">
+      <button class="bg-cyan-600 rounded-lg mx-2 p-2 text-lg" @click="incBPM">Increase BPM</button>
+      <button class="bg-cyan-800 rounded-lg mx-2 p-2 text-lg" @click="decBPM">Decrease BPM</button>
+      <p class="mt-6 text-4xl">{{ bpm }}</p>
       <p v-if="errMsg">{{ errMsg }}</p>
     </div>
   </div>

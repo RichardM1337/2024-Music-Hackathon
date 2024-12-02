@@ -1,11 +1,15 @@
 <template>
-  <div>
-    <button @click="startRecording" :disabled="isRecording">start recording</button>
-    <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
+  <div class="text-xl bg-red-500 w-[23rem] h-1/2">
+    <div class="mb-4">
+    <button class="bg-red-400 w-1/2 p-7" @click="startRecording" :disabled="isRecording">Start Recording</button>
+    <button class="bg-red-300 w-1/2 p-7" @click="stopRecording" :disabled="!isRecording">Stop Recording</button>
+  </div>
+  <div class="text-center mt-8">
     <p v-if="msg">{{ msg }}</p>
-    <p v-if="pitchMsg">{{ pitchMsg }}</p>
+    <p class="mt-8" v-if="pitchMsg">{{ pitchMsg }}</p>
     <p v-if="error" class="error">Error: {{ error }}</p>
     <p v-if="transcript">{{ transcript }}</p>
+  </div>
   </div>
 </template>
 
@@ -17,7 +21,7 @@ export default {
       isRecording: false,
       micInput: null,
       micContext: null,
-      msg: '',
+      msg: 'Mic off',
       pitchMsg: '',
       meydaAnalyser: null,
 
@@ -79,7 +83,7 @@ export default {
       this.recognition.start() // reset all variables
 
       this.isRecording = true
-      this.msg = 'mic on'
+      this.msg = 'Mic on'
       try {
         this.micInput = await navigator.mediaDevices.getUserMedia({ video: false, audio: true }) //navigator.getUserMedia|| navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         this.micContext = new window.AudioContext() || new window.webkitAudioContext() // creates new audio node object
@@ -103,7 +107,7 @@ export default {
         if (this.micContext) this.micContext.close()
         if (this.meydaAnalyzer) this.meydaAnalyzer.stop()
         this.isRecording = false
-        this.msg = 'mic off'
+        this.msg = 'Mic off'
         this.pitchMsg = ''
         this.recognition.stop()
       }

@@ -1,8 +1,8 @@
 <template>
-    <div>
-      <h1 class="container">Image Upload Vue.js uplad your sheet meusic</h1>
+    <div class="bg-slate-400 p-6 min-h-screen w-[45rem]">
+      <h1 class="text-3xl font-bold">Upload your sheet music here!</h1>
       <div>
-        <div class="file-container">
+        <div class="my-8">
           <div>
             <form>
               <input
@@ -14,9 +14,6 @@
               />
               <div>
                 <section>
-                  <img src="./assets/upload.svg" />
-  
-                  <p>Upload Your answer here.</p>
                   <p>Minimum file size 50MB</p>
                 </section>
               </div>
@@ -34,10 +31,10 @@
                 <img :src="src" id="output" class="image-style" />
               </div>
               <div class="cross-icon" v-if="imageSrc">
-                <img src="./assets/cancel.svg" @click="removeItem(index)" />
+                <button class="text-xl bg-gray-300 my-2 rounded-lg p-2" @click="removeItem(index)">Remove</button>
               </div>
   
-              <p style="width: 150px" class="line-clamp-1 text-center">
+              <p>
                 {{ selectedFiles[index].name }}
               </p>
             </div>
