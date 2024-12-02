@@ -4,6 +4,8 @@
     <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
     <p v-if="msg">{{ msg }}</p>
     <p v-if="pitchMsg">{{ pitchMsg }}</p>
+    <p v-if="error" class="error">Error: {{ error }}</p>
+    <p v-if="transcript">{{ transcript }}</p>
   </div>
 </template>
 
@@ -18,9 +20,47 @@ export default {
       msg: '',
       pitchMsg: '',
       meydaAnalyser: null,
+
+      isSupported: false,
+      // isListening: false,
+      transcript: '',
+      error: '',
+      recognition: null, // WebSpeechAPI initialization
     }
   },
   methods: {
+
+    initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition // isn't it funny how the speech recognition API built by mozilla isn't availble on firefox?
+      if (!SpeechRecognition) {
+        this.error = 'Speech Recognition API is not supported in this browser.'
+        this.isSupported = false
+        return
+      }
+      this.recognition = new SpeechRecognition()
+      this.recognition.lang = 'en-US'
+      this.recognition.continuous = true // keep going
+      this.recognition.interimResults = false
+      this.recognition.onresult = (event) => {
+        const result = event.results[event.results.length - 1][0].transcript // most likely interpretation of most recent word or phrase from a transcript
+        this.transcript = result
+      }
+      this.recognition.onerror = (event) => {
+        // error handling
+        this.error = event.error
+        this.isRecording = false
+      }
+      this.recognition.onend = () => {
+        this.isRecording = false // stop listening when speech ends
+      }
+    },
+  
+    stopRecognition() {
+      if (this.recognition) {
+        this.recognition.stop()
+      }
+    },
+
     frequencyToPitch(frequency) {
       const A4 = 440 // a4 pitch
       const semitones = Math.round(12 * Math.log2(frequency / A4)) // diff b/w freq and 440 hz
@@ -30,6 +70,14 @@ export default {
       return `${pitchClasses[pitchIndex]} ${octave}` // one of the 12 pitches will be selected
     },
     async startRecording() {
+      if (!this.recognition) {
+        this.initSpeechRecognition() // initiallaize speech recognition or something
+      }
+      this.error = ''
+      this.transcript = ''
+      this.isListening = true
+      this.recognition.start() // reset all variables
+
       this.isRecording = true
         this.msg = 'mic on'
       try {
@@ -46,7 +94,10 @@ export default {
       }
     },
     async stopRecording() {
-      if (this.micInput) {
+      // if (this.recognition) {
+      //   this.recognition.stop()
+      // }
+      if (this.micInput, this.recognition) {
         const tracks = this.micInput.getTracks() // return the audio
         tracks.forEach((track) => track.stop())
         if (this.micContext) this.micContext.close()
@@ -54,6 +105,7 @@ export default {
         this.isRecording = false
         this.msg = 'mic off'
         this.pitchMsg = ''
+        this.recognition.stop()
       }
     },
     pitchDetection() {
@@ -76,6 +128,10 @@ export default {
 
       processAudio()
     },
+  },
+
+  mounted() {
+    this.initSpeechRecognition()
   },
 }
 </script>
