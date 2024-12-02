@@ -14,8 +14,8 @@ import metronome from '@/components/Metronome.vue'
     <div class="flex justify-center">
     <div class="border-8 border-sky-100/70">
       <PitchPickup />
-      <!-- <vexflow/>
-      <MicPickup /> -->
+      <!-- <vexflow/> -->
+      <MicPickup />
       <metronome/>
       <!-- <SpeechRecog /> -->
       <!-- <nav>
