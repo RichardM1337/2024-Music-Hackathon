@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1 class="container">Image Upload Vue.js</h1>
+      <h1 class="container">Image Upload Vue.js uplad your sheet meusic</h1>
       <div>
         <div class="file-container">
           <div>
