@@ -1,6 +1,9 @@
 <template>
+  <h1 class="text-3xl font-bold underline text-white">
+      Hello world!
+</h1>
   <div>
-    <button @click="startRecording" :disabled="isRecording">start recording</button>
+    <button class="bg-orange-300" @click="startRecording" :disabled="isRecording">start recording</button>
     <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
     <p v-if="msg">{{ msg }}</p>
     <p v-if="pitchMsg">{{ pitchMsg }}</p>
