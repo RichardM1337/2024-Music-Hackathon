@@ -79,7 +79,7 @@ export default {
       this.recognition.start() // reset all variables
 
       this.isRecording = true
-        this.msg = 'mic on'
+      this.msg = 'mic on'
       try {
         this.micInput = await navigator.mediaDevices.getUserMedia({ video: false, audio: true }) //navigator.getUserMedia|| navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         this.micContext = new window.AudioContext() || new window.webkitAudioContext() // creates new audio node object
