@@ -5,6 +5,7 @@ import vexflow from '@/components/vexflow.vue';
 import MicPickup from '@/components/MicPickup.vue'
 import SpeechRecog from '@/components/SpeechRecog.vue'
 import upload from '@/components/upload.vue'
+import metronome from '@/components/metronome.vue'
 </script>
 
 <template>
@@ -13,8 +14,9 @@ import upload from '@/components/upload.vue'
 
     <div>
       <PitchPickup />
-      <vexflow/>
-      <MicPickup />
+      <!-- <vexflow/>
+      <MicPickup /> -->
+      <metronome/>
       <!-- <SpeechRecog /> -->
       <!-- <nav>
         <RouterLink to="/">Home</RouterLink>
@@ -25,6 +27,10 @@ import upload from '@/components/upload.vue'
     
     <div>
       <upload />
+    </div>
+
+    <div>
+      
     </div>
   </header>
 

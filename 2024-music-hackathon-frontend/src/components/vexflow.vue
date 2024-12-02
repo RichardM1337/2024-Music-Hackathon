@@ -27,7 +27,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import Vex from 'vexflow'
-import * as Tone from 'tone'
+//import * as Tone from 'tone'
 /*
 const clef = ref("treble");
 const timeSignature = ref("4/4");
