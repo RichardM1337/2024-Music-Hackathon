@@ -1,12 +1,30 @@
 <template>
-  <div class=" w-[23rem] text-xl bg-cyan-700 w-[20rem] h-1/2 flex flex-col items-center text-center">
-    <p>{{ tempo }}</p>
-    <button class="mb-4 w-full bg-cyan-500 p-4" @click="playMetronome">{{ isPlaying ? 'Pause' : 'Play' }}</button>
-    <div class="border-8 border-stone-300/50 rounded-xl p-2 bg-slate-200/50">
-      <button class="bg-cyan-600 rounded-lg mx-2 p-2 text-lg" @click="incBPM">Increase BPM</button>
-      <button class="bg-cyan-800 rounded-lg mx-2 p-2 text-lg" @click="decBPM">Decrease BPM</button>
-      <p class="mt-6 text-4xl">{{ bpm }}</p>
-      <p v-if="errMsg">{{ errMsg }}</p>
+  <div class="flex flex-col items-center bg-cyan-600 text-white rounded-lg p-6 gap-4">
+    <h2 class="text-xl font-semibold mb-4">Metronome</h2>
+    <p class="text-2xl font-semibold">{{ tempo }}</p>
+    <button
+      class="w-full bg-cyan-500 hover:bg-cyan-700 transition-all rounded-md px-4 py-2 font-medium"
+      @click="playMetronome"
+    >
+      {{ isPlaying ? 'Pause' : 'Play' }}
+    </button>
+    <div class="w-full bg-cyan-100 text-cyan-800 rounded-md p-4 shadow-inner">
+      <div class="flex justify-between gap-2 mb-4">
+        <button
+          class="flex-1 bg-cyan-500 hover:bg-cyan-600 rounded-md px-3 py-2"
+          @click="incBPM"
+        >
+          Increase BPM
+        </button>
+        <button
+          class="flex-1 bg-cyan-700 hover:bg-cyan-800 rounded-md px-3 py-2"
+          @click="decBPM"
+        >
+          Decrease BPM
+        </button>
+      </div>
+      <p class="text-4xl font-bold text-center">{{ bpm }}</p>
+      <p v-if="errMsg" class="text-red-500 text-sm mt-2 text-center">{{ errMsg }}</p>
     </div>
   </div>
 </template>

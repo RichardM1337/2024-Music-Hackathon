@@ -1,8 +1,25 @@
 <template>
-  <div>
-    <button @click="startRecording" :disabled="isRecording">start recording</button>
-    <button @click="stopRecording" :disabled="!isRecording">stop recording</button>
-    <audio v-if="audioURL" :src="audioURL" controls></audio>
+  <div class="flex flex-col items-center bg-blue-600 text-white rounded-lg p-8 gap-6 w-full">
+    <h2 class="text-xl font-semibold mb-4">Voice Playback</h2>
+    <div class="flex justify-between gap-6 w-full">
+      <button
+        class="flex-1 bg-blue-500 hover:bg-blue-700 transition-all rounded-md px-4 py-4 disabled:hover:bg-blue-500"
+        @click="startRecording"
+        :disabled="isRecording"
+      >
+        Start Recording
+      </button>
+      <button
+        class="flex-1 bg-blue-300 hover:bg-blue-500 transition-all rounded-md px-4 py-4 disabled:hover:bg-blue-300"
+        @click="stopRecording"
+        :disabled="!isRecording"
+      >
+        Stop Recording
+      </button>
+    </div>
+    <div class="w-full text-center mt-6">
+      <audio v-if="audioURL" :src="audioURL" controls class="w-full rounded-md shadow-md" />
+    </div>
   </div>
 </template>
 

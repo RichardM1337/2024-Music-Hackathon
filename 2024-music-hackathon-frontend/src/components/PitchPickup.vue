@@ -1,17 +1,31 @@
 <template>
-  <div class="text-xl bg-red-500 w-[23rem] h-1/2">
-    <div class="mb-4">
-    <button class="bg-red-400 w-1/2 p-7" @click="startRecording" :disabled="isRecording">Start Recording</button>
-    <button class="bg-red-300 w-1/2 p-7" @click="stopRecording" :disabled="!isRecording">Stop Recording</button>
-  </div>
-  <div class="text-center mt-8">
-    <p v-if="msg">{{ msg }}</p>
-    <p class="mt-8" v-if="pitchMsg">{{ pitchMsg }}</p>
-    <p v-if="error" class="error">Error: {{ error }}</p>
-    <p v-if="transcript">{{ transcript }}</p>
-  </div>
+  <div class="flex flex-col items-center bg-red-600 text-white rounded-lg p-6 gap-4">
+    <h2 class="text-xl font-semibold mb-4">Pitch Detector</h2>
+    <div class="w-full flex justify-between gap-2">
+      <button
+        class="flex-1 bg-red-400 hover:bg-red-500 transition-all rounded-md px-4 py-4 disabled:hover:bg-red-400"
+        @click="startRecording"
+        :disabled="isRecording"
+      >
+        Start Recording
+      </button>
+      <button
+        class="flex-1 bg-red-300 hover:bg-red-400 transition-all rounded-md px-4 py-4 disabled:hover:bg-red-300"
+        @click="stopRecording"
+        :disabled="!isRecording"
+      >
+        Stop Recording
+      </button>
+    </div>
+    <div class="text-center space-y-2">
+      <p v-if="msg" class="text-lg font-medium">{{ msg }}</p>
+      <p v-if="pitchMsg" class="text-yellow-200">{{ pitchMsg }}</p>
+      <p v-if="error" class="text-red-300 font-bold">Error: {{ error }}</p>
+      <p v-if="transcript" class="text-sm text-gray-200">{{ transcript }}</p>
+    </div>
   </div>
 </template>
+
 
 <script>
 import * as Pitchfinder from 'pitchfinder'
@@ -21,7 +35,7 @@ export default {
       isRecording: false,
       micInput: null,
       micContext: null,
-      msg: 'Mic off',
+      msg: 'Microphone Disabled',
       pitchMsg: '',
       meydaAnalyser: null,
 
@@ -83,7 +97,7 @@ export default {
       this.recognition.start() // reset all variables
 
       this.isRecording = true
-      this.msg = 'Mic on'
+      this.msg = 'Microphone Enabled'
       try {
         this.micInput = await navigator.mediaDevices.getUserMedia({ video: false, audio: true }) //navigator.getUserMedia|| navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         this.micContext = new window.AudioContext() || new window.webkitAudioContext() // creates new audio node object
@@ -107,7 +121,7 @@ export default {
         if (this.micContext) this.micContext.close()
         if (this.meydaAnalyzer) this.meydaAnalyzer.stop()
         this.isRecording = false
-        this.msg = 'Mic off'
+        this.msg = 'Microphone Disabled'
         this.pitchMsg = ''
         this.recognition.stop()
       }
