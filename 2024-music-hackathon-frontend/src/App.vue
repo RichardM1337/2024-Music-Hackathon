@@ -4,6 +4,7 @@ import PitchPickup from '@/components/PitchPickup.vue'
 import vexflow from '@/components/vexflow.vue';
 import MicPickup from '@/components/MicPickup.vue'
 import SpeechRecog from '@/components/SpeechRecog.vue'
+import upload from '@/components/upload.vue'
 </script>
 
 <template>
@@ -14,6 +15,7 @@ import SpeechRecog from '@/components/SpeechRecog.vue'
       <PitchPickup />
       <vexflow/>
       <MicPickup />
+      <upload />
       <!-- <SpeechRecog /> -->
       <!-- <nav>
         <RouterLink to="/">Home</RouterLink>
