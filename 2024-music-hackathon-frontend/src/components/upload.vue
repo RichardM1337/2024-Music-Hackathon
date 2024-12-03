@@ -14,7 +14,7 @@
             @dragover.prevent
           >
             <p class="text-gray-500 mb-4">
-              Drag & drop your files here, or
+              Upload Sheet Music
             </p>
             <label
               for="media"
@@ -28,7 +28,7 @@
               accept="image/*"
               multiple
               class="hidden"
-              @change="handelFileUpload"
+              @change="handleFileUpload"
             />
             <p class="text-sm text-gray-400 mt-4">
               Minimum file size: 50MB
@@ -80,10 +80,10 @@
   });
   
   const imageSrc = ref([]);
-  
   const selectedFiles = ref([]);
-  const handelFileUpload = (e) => {
-    var files = e.target.files || e.dataTransfer.files;
+
+  const handleFileUpload = (e) => {
+    const files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
   
     for (let i = 0; i < files.length; i++) {
@@ -91,7 +91,6 @@
       const src = URL.createObjectURL(files[i]);
       imageSrc.value.push(src);
     }
-    console.log(selectedFiles.value, "seldjhfdh fikes");
   
     form.value.media = e.target.files[0];
     console.log(form.value.media, "file upload");

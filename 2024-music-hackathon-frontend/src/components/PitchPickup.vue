@@ -82,6 +82,7 @@ export default {
     frequencyToPitch(frequency) {
       const A4 = 440 // a4 pitch
       const semitones = Math.round(12 * Math.log2(frequency / A4)) // diff b/w freq and 440 hz
+      //is the frequency just wrong or is it the logic -> check later 
       const pitchClasses = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
       const pitchIndex = (semitones + 1200) % 12 // round whatever semitones and divide by 12
       const octave = Math.floor(semitones / 12) + 4
